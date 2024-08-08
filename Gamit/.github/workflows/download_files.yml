@@ -17,6 +17,7 @@ jobs:
 
       - name: Build and run Docker container
         run: |
+          # 创建 Dockerfile
           echo "
           FROM ubuntu:latest
           RUN apt-get update && apt-get install -y wget
@@ -25,6 +26,8 @@ jobs:
           CMD [\"/download_files.sh\"]
           " > Dockerfile
 
+          # 构建 Docker 镜像
           docker build -t download-script .
-          docker run -v ${{ github.workspace }}:/local_directory download-script
 
+          # 运行 Docker 容器并将本地目录挂载到容器中
+          docker run -v ${{ github.workspace }}:/local_directory download-script
