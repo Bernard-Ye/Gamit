@@ -23,7 +23,7 @@ jobs:
           RUN apt-get update && apt-get install -y wget
           COPY download_files.sh /download_files.sh
           RUN chmod +x /download_files.sh
-          CMD [\"/download_files.sh\"]
+          CMD [\"/download_tables_files.sh\"]
           " > Dockerfile
 
           # 构建 Docker 镜像
