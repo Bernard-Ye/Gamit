@@ -1,0 +1,30 @@
+name: Download Files
+
+on:
+  schedule:
+    - cron: '0 2 * * *'  # 每天凌晨2点运行
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Docker
+        uses: docker/setup-buildx-action@v1
+
+      - name: Build and run Docker container
+        run: |
+          echo "
+          FROM ubuntu:latest
+          RUN apt-get update && apt-get install -y wget
+          COPY download_files.sh /download_files.sh
+          RUN chmod +x /download_files.sh
+          CMD [\"/download_files.sh\"]
+          " > Dockerfile
+
+          docker build -t download-script .
+          docker run -v ${{ github.workspace }}:/local_directory download-script
+
